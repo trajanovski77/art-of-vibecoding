@@ -71,3 +71,7 @@ details replaced with `<placeholders>`, structure, comments and reasons kept.
 Claude Code syntax in these templates (hook events and matchers, settings keys, `paths:` in rules, skill and
 subagent frontmatter) was checked against [code.claude.com/docs](https://code.claude.com/docs) on 24 September
 2026. If the docs and a template disagree, the docs win.
+
+## Licence
+
+Apache License 2.0, see [LICENSE](LICENSE). Potato, the annotation tool the build adopted, is GPL-3.0 and is not included here; Karpathy's LLM Wiki gist is linked, not copied.
