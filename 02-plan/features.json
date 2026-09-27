@@ -1,0 +1,29 @@
+{
+  "$comment": "Every end-to-end behaviour of <project name>. A builder flips `passes` to true only after running `steps` and seeing them pass, and commits the flip with the work. Steps are literal commands run from the repo root, or start with `manual:` and name the evidence to attach. Ids are stable: add, never renumber. `package` matches a work package id in docs/BUILD-PLAN.md. Everything starts as false.",
+  "features": [
+    {
+      "id": "F001",
+      "package": "P0",
+      "description": "init.sh starts the stack and the smoke test passes",
+      "steps": ["./init.sh check", "./init.sh up", "./init.sh smoke"],
+      "passes": false
+    },
+    {
+      "id": "F002",
+      "package": "P1",
+      "description": "<a behaviour a user or another component can observe, in one sentence>",
+      "steps": ["<a command that exits 0 only when the behaviour works>"],
+      "passes": false
+    },
+    {
+      "id": "F003",
+      "package": "P2",
+      "description": "<a behaviour that needs human eyes, such as the first page a new user sees>",
+      "steps": [
+        "./init.sh up",
+        "manual: open <url> at 1440 px as a first-time user would; save a screenshot to docs/journey/P2/"
+      ],
+      "passes": false
+    }
+  ]
+}

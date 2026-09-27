@@ -1,0 +1,27 @@
+# Private production desk: state, decisions, settings backup, deck assets. Never publish.
+.desk/
+
+# Slide builders: private paths, transcript session ids and hosted asset ids; rebuilt separately.
+deck/
+
+# Output generated from private session transcripts
+capture/out/
+/steps/
+
+# Screenshot that shows a local home-directory path (kept out until redacted)
+capture/app/s12-p0-review-a-prompt.png
+
+# Secrets and personal Claude Code files
+.env
+.env.*
+!.env.example
+secrets/
+.claude/settings.local.json
+CLAUDE.local.md
+.claude/worktrees/
+
+# Python and OS clutter
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
