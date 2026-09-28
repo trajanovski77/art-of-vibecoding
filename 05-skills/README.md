@@ -17,6 +17,32 @@ Start a new session, then type `/step-done <short title>` when a step is complet
 | File | What it does | Why it exists | Used in the build |
 |---|---|---|---|
 | `.claude/skills/step-done/SKILL.md` | Closes a step: checks it was verified, appends a 12-line entry to `docs/progress.md`, ingests the step into `vault/` if the repo has a wiki, commits only this step's files by pathspec, tags the next free `step-NN`. | Parallel sessions share one working tree and one tag namespace. Without a fixed procedure, someone runs `git add -A` and commits another session's half-finished work, or two sessions take the same step number. | Created at step 01 ([prompts/01](../prompts/01-setup-brief.md), deliverable 6) as `checkpoint`; extended with the wiki ingest at step 09 ([prompts/10](../prompts/10-map-the-codebase-llm-wiki.md), task 4). It closed every step of the build. |
+| `.claude/skills/codex-orchestration/SKILL.md` | Splits work between Claude Code and Codex: Claude plans, owns all design/frontend and verifies; Codex critiques the plan read-only, then implements backend units with tests. The loop: plan, adversarial review, delegate one unit with a hard contract, tiered verify, integrate. | Different models fail differently, and the build loop moves onto a second quota. Another agent's green tick is a claim, not evidence, so the skill names the paths Claude always re-verifies. | Not used in this build (it was Claude-only); from my own projects in July and August. It is the "Claude plans, Codex critiques" slide. Needs the [Codex plugin](#the-skills-from-the-talk). |
+| `.claude/skills/codex-orchestration/notes.md` | The running notes file the skill reads before every delegation and appends to after each one. | What worked and what Codex got wrong carries across sessions and projects. | The two example entries are the two lessons quoted in the talk, generalised. Replace them with your own. |
+
+`codex-orchestration` is a personal skill: install it in `~/.claude/skills/` so it applies to every project,
+then replace `<codex-model>`, `<frontend>` and `<backend>` with your own.
+
+```bash
+cp -R 05-skills/.claude/skills/codex-orchestration ~/.claude/skills/
+```
+
+## The skills from the talk
+
+The "My skills, and why" slide listed the skills I use every day. The others are other people's work, so they
+are linked here, not copied. Links, licences and install commands were checked on 28 September 2026.
+
+| Skill | What it is for | Source (licence) | Install in Claude Code |
+|---|---|---|---|
+| **codex-orchestration** | Claude plans and owns the UI; Codex critiques and builds the backend. | This folder (Apache-2.0) | Copy it (above). It needs the Codex plugin: `/plugin marketplace add openai/codex-plugin-cc`, then `/plugin install codex@openai-codex`, then `/codex:setup` ([openai/codex-plugin-cc](https://github.com/openai/codex-plugin-cc), Apache-2.0) |
+| **frontend-design** | A deliberate design direction instead of templated defaults. | Anthropic, [claude-plugins-official/plugins/frontend-design](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design) (Apache-2.0) | `/plugin install frontend-design@claude-plugins-official` |
+| **ui-ux-pro-max** | Searchable design data (styles, palettes, font pairings, UX guidelines); gives UI work a direction alongside frontend-design. | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT) | `/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill`, then `/plugin install ui-ux-pro-max@ui-ux-pro-max-skill` |
+| **humanizer** | Removes AI-writing tells from text, based on Wikipedia's "Signs of AI writing". | [blader/humanizer](https://github.com/blader/humanizer) (MIT) | `/plugin marketplace add blader/humanizer`, then `/plugin install humanizer@humanizer`; or `npx skills add blader/humanizer --global` |
+| **skill-creator** | Builds, tests and benchmarks skills; measures whether a description triggers. | Anthropic, [claude-plugins-official/plugins/skill-creator](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator), also in [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) (Apache-2.0) | `/plugin install skill-creator@claude-plugins-official` |
+| **improve** | Audits a codebase with a strong model and writes self-contained plans for cheaper agents to execute. | shadcn, [shadcn/improve](https://github.com/shadcn/improve) (MIT) | `npx skills add shadcn/improve` |
+
+Read a skill before you install it: it runs with your permissions, and the `allowed-tools` in its frontmatter
+can pre-approve tools for itself. Start a new session after installing.
 
 **Why `step-done` and not `checkpoint`.** In the build the skill was called `checkpoint`. The
 [commands reference](https://code.claude.com/docs/en/commands) lists `/checkpoint` as an alias of the built-in
